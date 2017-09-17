@@ -4,10 +4,11 @@ var http = require("http"),
     express = require("express"),
     socketIo = require('socket.io'),
     path = require('path'),
-
+    dash = require('./src/dash/dash.js'),
     thermo = require('./src/thermostat.js');
 
 thermo.init(72);
+dash.init();
 
 const app = express();
 
@@ -33,81 +34,63 @@ io.on('connection', socket => {
 
     
     thermo.readTemperature(function (data) {
-
-	io.emit('temp:read', data);	
+        io.emit('temp:read', data);	
     });
 
     socket.on('hvac:cool', () => {
 
-	thermo.cool( () => {
-
-	    io.emit('hvac:status', { status : 'cool'});
-	});
-	
+        thermo.cool( () => {
+            io.emit('hvac:status', { status : 'cool'});
+        });
     });
 
     socket.on('hvac:heat', () => {
 
-	thermo.heat(() => {
-
-	    io.emit('hvac:status', { status : 'heat'});
-	});
-	
+        thermo.heat(() => {
+            io.emit('hvac:status', { status : 'heat'});
+        });
     });
     
     socket.on('hvac:off', () => {
 
-	thermo.off(() => {
-
-	    io.emit('hvac:status', { status : 'off'});
-	});
+        thermo.off(() => {
+            io.emit('hvac:status', { status : 'off'});
+        });
     });
 
     socket.on('hvac:status', () => {
 
-	var status = thermo.hvacStatus();
+        var status = thermo.hvacStatus();
 
-	io.emit('hvac:status', {status: status});
-		  
+        io.emit('hvac:status', {status: status});
     });
 	      
     socket.on('fan:status', () => {
 
-
-	var status = thermo.fanStatus();
-
-
-	io.emit('fan:status', {status : status});
-		  
+        var status = thermo.fanStatus();
+        io.emit('fan:status', {status : status});
     });
 
 
     socket.on('temp:set', data  => {
 
-	thermo.setTargetTemp(data.targetTemp);
-	io.emit('temp:target-changed', {targetTemp : data.targetTemp});
-	
+        thermo.setTargetTemp(data.targetTemp);
+        io.emit('temp:target-changed', {targetTemp : data.targetTemp});
     });
 
     socket.on('fan:on', () => {
 
-	thermo.fanOn(() => {
-
-	    io.emit('fan:status', { status : 'on'});
-	});
-	
+        thermo.fanOn(() => {
+            io.emit('fan:status', { status : 'on'});
+        });
     });
 
     socket.on('fan:auto', () => {
 
-	thermo.fanAuto(() => {
-
-	    io.emit('fan:status', { status : 'auto'});
-	});
-	
+        thermo.fanAuto(() => {
+            io.emit('fan:status', { status : 'auto'});
+        });
     });
-
-   
 });
 
 setInterval( () => {
