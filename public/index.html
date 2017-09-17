@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="styles.css"> 
+	<link rel="stylesheet" href="toggle.css"> 
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500" rel="stylesheet">
+</head>
+<body>
+    <div class="content">
+        
+
+        <div class="temperature major-section">
+            <div class="current-temp-container minor-section">
+                <div class="current-temp-wrapper">
+
+                    <span id="curr-temp">75</span>
+                </div>
+
+                <div class="status-alert">
+
+
+                </div>
+
+            </div>
+            <div class="target-temp-container minor-section">
+                <div class="target-temp-wrapper">
+                    <button id="up-temp-btn" class="circular-button click-btn">
+                        <span class="inner"><span>+</span></span>
+                    </button> 
+                    <span id="target-temp">72</span>
+                    <button id="down-temp-btn" class="circular-button click-btn">
+                        <span class="inner"><span>-</span></span>
+                    </button> 
+                </div>
+                <div class="preset-temp">
+                    <button id="preset1-btn" class="circular-button click-btn btn-sm">
+                        <span class="inner"><span id="preset1-value">70</span></span>
+                    </button> 
+                 
+                    <button id="preset2-btn" class="circular-button click-btn btn-sm">
+                        <span class="inner"><span id="preset2-value">76</span></span>
+                    </button> 
+                </div>
+            </div>
+        </div>
+        <div class="controls major-section">
+            <div class="hvac">
+                <div>
+                    <button id="heat-btn" class="btn btn-circle  btn-circle--passive">
+                        <div>HEAT</div>
+                    </button>
+                </div>
+                <div>
+                    <button id="off-btn" class="btn btn-circle  btn-circle--passive">
+                        <div>OFF</div>
+                    </button>
+                </div>
+                <div>
+                    <button id="cool-btn" class="btn btn-circle  btn-circle--passive">
+                        <div>COOL</div>
+                    </button>
+                </div>
+             </div>
+            <div class="fan">
+	      <!--
+                <span>Fan</span>
+                <div class="toggle toggle-light"  data-toggle-height="40" data-toggle-width="90"></div>
+		-->
+              <button id="fan-auto-btn" class="btn btn-circle  btn-circle--passive">
+                <div>AUTO</div>
+              </button>
+              <button id="fan-on-btn" class="btn btn-circle  btn-circle--passive">
+                <div>ON</div>
+              </button>
+               
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+<script src="socket.io/socket.io.js"></script>
+<script src="jquery-3.2.1.min.js"></script>
+<script src="toggle.js"></script>
+<script src="app.js"></script>
+</html>
