@@ -121,13 +121,11 @@ function setupSocketEventListeners() {
 
 $(document).ready(function() {
 
-    $('.toggle').toggles({text:{on:'AUTO',off:'ON'}});
-
     socket.on('temp:read', function(data) {
 
-	console.log(data);
-	console.log(new Date());
-	$('#curr-temp').text(data.tempF);
+        console.log(data);
+        console.log(new Date());
+        $('#curr-temp').text(data.tempF);
       
     });
   
