@@ -8,7 +8,9 @@ var http = require("http"),
     thermo = require('./src/thermostat.js');
 
 thermo.init(72);
-dash.init();
+var dashHandler = dash.init();
+
+
 
 const app = express();
 
@@ -23,6 +25,7 @@ app.get('/', (req, res) => {
 const server = new http.Server(app);
 
 const io = socketIo(server);
+
 
 io.on('connection', socket => {
 
@@ -91,6 +94,14 @@ io.on('connection', socket => {
             io.emit('fan:status', { status : 'auto'});
         });
     });
+});
+
+dashHandler.on('detected', function() {
+	
+	console.log('Button Pressed - Setting Temp');
+	thermo.setTargetTemp(76);
+	io.emit('temp:target-changed', {targetTemp : 76});
+	
 });
 
 setInterval( () => {

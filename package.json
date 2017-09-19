@@ -15,6 +15,7 @@
     "express": "^4.15.3",
     "jade": "^1.11.0",
     "jquery": "^3.2.1",
+    "node-dash-button": "^0.6.1",
     "rpi-gpio": "^0.8.1",
     "socket.io": "^2.0.2"
   }
