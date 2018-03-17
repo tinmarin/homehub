@@ -4,7 +4,7 @@ var http = require("http"),
     express = require("express"),
     socketIo = require('socket.io'),
     path = require('path'),
-    dash = require('./src/mock/dashMock'),
+    dash = require('./src/dash/dash'),
     thermo = require('./src/thermostat.js');
 
 thermo.init(72);
@@ -106,7 +106,7 @@ setInterval( () => {
 	io.emit('temp:read', temp);
     });
     
-}, 10000); // Set to 30000
+}, 30000);
 
 const port = 3000;
 

@@ -1,5 +1,5 @@
-var relay = require('./mock/relayMock'),
-    sensor = require('./mock/sensorMock'),
+var relay = require('./relay'),
+    sensor = require('./sensor'),
     logger = require('./logger');
 
 var Thermostat = function() {};
@@ -103,8 +103,6 @@ Thermostat.prototype.off = function(callback) {
 
     hvacStatus = HVAC_OFF;
     
-    // relay.write(COOL, OFF); //use the set function
-    // relay.write(HEAT, OFF); //use the set function
     set(COOL, OFF);
     set(HEAT, OFF);
     
@@ -163,11 +161,8 @@ function processTemperature(currentTemp) {
 
             set(COOL, OFF);
         }
-
     }
-    
 }
-
 
 function set(channel, value){
 
