@@ -1,5 +1,5 @@
-var relay = require('./relay.js'),
-    sensor = require('./sensor.js'),
+var relay = require('./mock/relayMock'),
+    sensor = require('./mock/sensorMock'),
     logger = require('./logger');
 
 var Thermostat = function() {};
@@ -14,6 +14,8 @@ var FAN_ON = 'on', FAN_AUTO = 'auto';
 
 var fanStatus = FAN_AUTO;
 var hvacStatus = HVAC_OFF;
+var currentChannelOn = '';
+
 
 var targetTemp, currentTemp;
 
@@ -31,11 +33,10 @@ Thermostat.prototype.init = function(temp){
 Thermostat.prototype.status = function(callback) {
 
     return {
-
-	hvacStatus: hvacStatus,
-	fanStatus: fanStatus,
-	targetTemp: targetTemp,
-	tempF: currentTemp
+        hvacStatus: hvacStatus,
+        fanStatus: fanStatus,
+        targetTemp: targetTemp,
+        tempF: currentTemp
     }
 
 }
@@ -43,20 +44,16 @@ Thermostat.prototype.status = function(callback) {
 Thermostat.prototype.readTemperature = function(callback) {
 
     sensor.read(function(temp){
-
-	currentTemp = temp.tempF;
-	temp.hvacStatus = hvacStatus;
-	temp.fanStatus = fanStatus;
-	temp.targetTemp = targetTemp;
-	processTemperature(temp.tempF);
-	if(callback) callback(temp);
-
+        currentTemp = temp.tempF;
+        temp.hvacStatus = hvacStatus;
+        temp.fanStatus = fanStatus;
+        temp.targetTemp = targetTemp;
+        processTemperature(temp.tempF);
+        if(callback) callback(temp);
     });
-
 }
 
 Thermostat.prototype.fanOn = function(callback) {
-
 
     turnFan(ON);
 
@@ -80,12 +77,24 @@ Thermostat.prototype.heat = function(callback) {
 
     if(hvacStatus == HVAC_HEAT) return;
 
-    if(hvacStatus == HVAC_COOL) turnCool(OFF);
+    if(hvacStatus == HVAC_COOL) set(COOL, OFF);
     
     hvacStatus = HVAC_HEAT;
 
     if(callback) callback();
     
+}
+
+Thermostat.prototype.cool = function(callback) {
+
+    if(hvacStatus == HVAC_COOL) return;
+
+    if(hvacStatus == HVAC_HEAT) set(HEAT, OFF);
+
+    hvacStatus = HVAC_COOL;
+
+    if(callback) callback();
+
 }
 
 Thermostat.prototype.off = function(callback) {
@@ -94,87 +103,87 @@ Thermostat.prototype.off = function(callback) {
 
     hvacStatus = HVAC_OFF;
     
-    relay.write(COOL, 0);
-    relay.write(HEAT, 0);
+    // relay.write(COOL, OFF); //use the set function
+    // relay.write(HEAT, OFF); //use the set function
+    set(COOL, OFF);
+    set(HEAT, OFF);
     
-    if (fanStatus == FAN_AUTO) relay.write(FAN, 0);
-
-    if(callback) callback();
-
-}
-
-Thermostat.prototype.cool = function(callback) {
-
-    if(hvacStatus == HVAC_COOL) return;
-
-    if(hvacStatus == HVAC_HEAT) turnHeat(OFF);
-
-    hvacStatus = HVAC_COOL;
+    if (fanStatus == FAN_AUTO) turnFan(OFF);
 
     if(callback) callback();
 
 }
 
 Thermostat.prototype.setTargetTemp = function(temp) {
-
     targetTemp = temp;
-
 }
 
-
 Thermostat.prototype.hvacStatus = function(){
-
     return hvacStatus;
-
 }
 
 Thermostat.prototype.fanStatus = function() {
-
     return fanStatus;
-
 }
 
 Thermostat.prototype.targetTemp = function() {
-
     return targetTemp;
-
 }
+
 function processTemperature(currentTemp) {
 
-    
     console.log('HVAC Status: ' + hvacStatus);
     console.log('Fan Status: ' + fanStatus);
-    
     console.log('Target:  ' + targetTemp);
     console.log('Current: ' + currentTemp);
 
     if(hvacStatus == HVAC_OFF) return;
     
     if(Math.abs(currentTemp - targetTemp) <= 1 && currentTemp >= targetTemp) return;
-    
-    
-    if(targetTemp > currentTemp) {
 
-	    hvacStatus == HVAC_COOL ? turnCool(OFF) : turnHeat(ON);
+    if(hvacStatus == HVAC_HEAT) {
 
+        if(targetTemp > currentTemp && currentChannelOn !== getChannelName(HEAT)) {
+            
+            set(HEAT, ON);
+        }
+        if(targetTemp < currentTemp && currentChannelOn === getChannelName(HEAT)) {
+
+            set(HEAT, OFF);
+        }
     }
 
-    if(targetTemp < currentTemp) {
+    if(hvacStatus == HVAC_COOL){
 
-	    hvacStatus == HVAC_COOL ?  turnCool(ON) : turnHeat(OFF);
-	
-    }    
+        if(targetTemp < currentTemp && currentChannelOn !== getChannelName(COOL)) {
+            
+            set(COOL, ON);
+        }
+        if(targetTemp > currentTemp && currentChannelOn === getChannelName(COOL)) {
+
+            set(COOL, OFF);
+        }
+
+    }
+    
 }
 
-function turnCool(value) {
 
-	console.log('Turning COOL ' + value);
-	relay.write(COOL, value);
-	if(fanStatus == FAN_AUTO) turnFan(value);
+function set(channel, value){
+
+    var channelStr = getChannelName(channel);
+    
+    console.log('Turning channel: ' + channelStr + ' ' + value);
+    
+    relay.write(channel, value);
+
+    currentChannelOn = value === ON ? channelStr : '';
+
+    if(fanStatus == FAN_AUTO) turnFan(value);
 
     logger.log(
         {
-            function: 'COOL',
+            channel: channelStr,
             status: value,
             targetTemp: targetTemp,
             currentTemp: currentTemp 
@@ -182,27 +191,53 @@ function turnCool(value) {
     );
 }
 
-function turnHeat(value) {
+function getChannelName(channel) {
 
-	console.log('Turning HEAT ' + value);
-	relay.write(HEAT, value);
-	if(fanStatus == FAN_AUTO) turnFan(value);
+    var channelStr = '';
 
-    logger.log(
-        {
-            function: 'HEAT',
-            status: value,
-            targetTemp: targetTemp,
-            currentTemp: currentTemp 
-        }
-    );
+    switch(channel) {
+        case 11 : channelStr = 'COOL'; break;
+        case 13 : channelStr = 'HEAT'; break;
+        case 15 : channelStr = 'FAN'; break;
+    }
+
+    return channelStr;
 }
+
+// function turnCool(value) {
+
+// 	console.log('Turning COOL ' + value);
+// 	relay.write(COOL, value);
+// 	if(fanStatus == FAN_AUTO) turnFan(value);
+
+//     logger.log(
+//         {
+//             channel: 'COOL',
+//             status: value,
+//             targetTemp: targetTemp,
+//             currentTemp: currentTemp 
+//         }
+//     );
+// }
+
+// function turnHeat(value) {
+
+// 	console.log('Turning HEAT ' + value);
+// 	relay.write(HEAT, value);
+// 	if(fanStatus == FAN_AUTO) turnFan(value);
+
+//     logger.log(
+//         {
+//             channel: 'HEAT',
+//             status: value,
+//             targetTemp: targetTemp,
+//             currentTemp: currentTemp 
+//         }
+//     );
+// }
 
 function turnFan(value) {
-
-
 	relay.write(FAN, value);
-    
 }
 
 module.exports = new Thermostat();

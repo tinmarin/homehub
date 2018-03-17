@@ -4,17 +4,13 @@ var http = require("http"),
     express = require("express"),
     socketIo = require('socket.io'),
     path = require('path'),
-    dash = require('./src/dash/dash.js'),
+    dash = require('./src/mock/dashMock'),
     thermo = require('./src/thermostat.js');
 
 thermo.init(72);
 var dashHandler = dash.init();
 
-
-
 const app = express();
-
-//app.set("view engine", "jade");
 
 app.use(express.static('./public'));
 
@@ -110,8 +106,7 @@ setInterval( () => {
 	io.emit('temp:read', temp);
     });
     
-}, 30000);
-
+}, 10000); // Set to 30000
 
 const port = 3000;
 

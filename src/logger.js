@@ -9,7 +9,7 @@ module.exports = new Logger();
 Logger.prototype.log = function(data) {
 
     var post_data = querystring.stringify({
-        'value1' : data.function,
+        'value1' : data.channel,
         'value2': data.status,
         'value3': data.targetTemp + ' / ' + data.currentTemp
     });
