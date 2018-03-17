@@ -36,7 +36,8 @@ Thermostat.prototype.status = function(callback) {
         hvacStatus: hvacStatus,
         fanStatus: fanStatus,
         targetTemp: targetTemp,
-        tempF: currentTemp
+        tempF: currentTemp,
+        currentChannelOn : currentChannelOn
     }
 
 }
@@ -195,41 +196,8 @@ function getChannelName(channel) {
         case 13 : channelStr = 'HEAT'; break;
         case 15 : channelStr = 'FAN'; break;
     }
-
     return channelStr;
 }
-
-// function turnCool(value) {
-
-// 	console.log('Turning COOL ' + value);
-// 	relay.write(COOL, value);
-// 	if(fanStatus == FAN_AUTO) turnFan(value);
-
-//     logger.log(
-//         {
-//             channel: 'COOL',
-//             status: value,
-//             targetTemp: targetTemp,
-//             currentTemp: currentTemp 
-//         }
-//     );
-// }
-
-// function turnHeat(value) {
-
-// 	console.log('Turning HEAT ' + value);
-// 	relay.write(HEAT, value);
-// 	if(fanStatus == FAN_AUTO) turnFan(value);
-
-//     logger.log(
-//         {
-//             channel: 'HEAT',
-//             status: value,
-//             targetTemp: targetTemp,
-//             currentTemp: currentTemp 
-//         }
-//     );
-// }
 
 function turnFan(value) {
 	relay.write(FAN, value);

@@ -1,6 +1,7 @@
 var ifttt = require('../ifttt.json');
 const http = require('http');
 var querystring = require('querystring');
+var fs = require('fs');
 
 var Logger = function() {}
 
@@ -8,6 +9,11 @@ module.exports = new Logger();
 
 Logger.prototype.log = function(data) {
 
+    fs.appendFileSync('hub.log', new Date().toLocaleString() + ' ' + data.channel + ' ' + data.status + ' ' + data.targetTemp + ' ' + data.currentTemp + '\r\n');
+
+}
+
+Logger.prototype.logToCloud = function(data) {
     var post_data = querystring.stringify({
         'value1' : data.channel,
         'value2': data.status,
@@ -34,7 +40,4 @@ Logger.prototype.log = function(data) {
     // post the data
     post_req.write(post_data);
     post_req.end();
-
 }
-
- 

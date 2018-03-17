@@ -185,6 +185,15 @@ button.circular-button .inner span {
     border-radius: 2px;
 }
 
+.temperature .current-temp-container--HEAT {
+    background-color: #ef6a0e;
+}
+.temperature .current-temp-container--COOL {
+    background-color: #104ce9;
+}
+.channel-status--HEAT, .channel-status--COOL {
+    color: white;
+}
 
 @media (min-width: 700px){
     .content {

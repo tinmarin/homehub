@@ -63,6 +63,13 @@ io.on('connection', socket => {
 
         io.emit('hvac:status', {status: status});
     });
+
+    socket.on('hvac:channel-status', () => {
+
+        var status = thermo.status();
+
+        io.emit('hvac:channel-status', status.currentChannelOn);
+    });
 	      
     socket.on('fan:status', () => {
 
@@ -106,7 +113,7 @@ setInterval( () => {
 	io.emit('temp:read', temp);
     });
     
-}, 30000);
+}, 30000); // Set to 30000
 
 const port = 3000;
 

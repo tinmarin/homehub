@@ -94,26 +94,41 @@ function setupSocketEventListeners() {
 
     socket.on('hvac:status', function(data) {
 
-	$('#heat-btn').removeClass('btn-circle--active').addClass('btn-circle--passive');
-	$('#off-btn').removeClass('btn-circle--active').addClass('btn-circle--passive');
-	$('#cool-btn').removeClass('btn-circle--active').addClass('btn-circle--passive');
+        $('#heat-btn').removeClass('btn-circle--active').addClass('btn-circle--passive');
+        $('#off-btn').removeClass('btn-circle--active').addClass('btn-circle--passive');
+        $('#cool-btn').removeClass('btn-circle--active').addClass('btn-circle--passive');
 
-	$('#' + data.status + '-btn').addClass('btn-circle--active');
+        $('#' + data.status + '-btn').addClass('btn-circle--active');
+
+    });
+
+    socket.on('hvac:channel-status', function(data){
+
+        if(data !== '') {
+            $('#curr-temp').addClass('channel-status--' + data);
+            $('.current-temp-container').addClass('current-temp-container--' + data);
+        } else {
+
+            $('#curr-temp').removeClass('channel-status--HEAT');
+            $('#curr-temp').removeClass('channel-status--COOL');
+            $('.current-temp-container').removeClass('current-temp-container--HEAT');
+            $('.current-temp-container').removeClass('current-temp-container--COOL');
+        }
 
     });
 
     socket.on('temp:target-changed', function(data){
 
-	$('#target-temp').text(data.targetTemp);
+	    $('#target-temp').text(data.targetTemp);
 
     });
 
     socket.on('fan:status', function(data){
 
-	$('#fan-auto-btn').removeClass('btn-circle--active').addClass('btn-circle--passive');
-	$('#fan-on-btn').removeClass('btn-circle--active').addClass('btn-circle--passive');
-	
-	$('#fan-' + data.status + '-btn').addClass('btn-circle--active');
+        $('#fan-auto-btn').removeClass('btn-circle--active').addClass('btn-circle--passive');
+        $('#fan-on-btn').removeClass('btn-circle--active').addClass('btn-circle--passive');
+        
+        $('#fan-' + data.status + '-btn').addClass('btn-circle--active');
 
     });
 
@@ -123,10 +138,8 @@ $(document).ready(function() {
 
     socket.on('temp:read', function(data) {
 
-        console.log(data);
-        console.log(new Date());
         $('#curr-temp').text(data.tempF);
-      
+        emitHVACEvent('channel-status');
     });
   
     setupUIEventListeners();
