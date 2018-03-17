@@ -155,13 +155,13 @@ function processTemperature(currentTemp) {
     
     if(targetTemp > currentTemp) {
 
-	hvacStatus == HVAC_COOL ? turnCool(OFF) : turnHeat(ON);
+	    hvacStatus == HVAC_COOL ? turnCool(OFF) : turnHeat(ON);
 
     }
 
     if(targetTemp < currentTemp) {
 
-	hvacStatus == HVAC_COOL ?  turnCool(ON) : turnHeat(OFF);
+	    hvacStatus == HVAC_COOL ?  turnCool(ON) : turnHeat(OFF);
 	
     }    
 }
