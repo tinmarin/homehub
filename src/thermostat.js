@@ -1,5 +1,6 @@
 var relay = require('./relay.js'),
-    sensor = require('./sensor.js');
+    sensor = require('./sensor.js'),
+    logger = require('./logger');
 
 var Thermostat = function() {};
 
@@ -171,6 +172,14 @@ function turnCool(value) {
 	relay.write(COOL, value);
 	if(fanStatus == FAN_AUTO) turnFan(value);
 
+    logger.log(
+        {
+            function: 'COOL',
+            status: value,
+            targetTemp: targetTemp,
+            currentTemp: currentTemp 
+        }
+    );
 }
 
 function turnHeat(value) {
@@ -179,6 +188,14 @@ function turnHeat(value) {
 	relay.write(HEAT, value);
 	if(fanStatus == FAN_AUTO) turnFan(value);
 
+    logger.log(
+        {
+            function: 'HEAT',
+            status: value,
+            targetTemp: targetTemp,
+            currentTemp: currentTemp 
+        }
+    );
 }
 
 function turnFan(value) {
