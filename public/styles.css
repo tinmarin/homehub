@@ -1,7 +1,5 @@
 body {
 
-    background-color: #dddddd;
-
     color: #5B6063;
     font-family: 'Arial', sans-serif;
     display: flex;
@@ -10,7 +8,7 @@ body {
     height: 100vh; 
     margin: 0;
     padding: 0;
-    background-color: #4f050b;
+    background: -webkit-linear-gradient( left, rgba(92,129,202,1) 0%, rgb(161, 175, 156) 100% );
 }
 
 .content {
@@ -19,10 +17,10 @@ body {
     flex-direction:  column;
     width: 100%;
     padding: 10px 16px;
-    background-color: #ddd;
+    background-color: rgba(0,0,0, .4);
     margin: 10px;
     border-radius: 5px;
-    box-shadow: 0 0 16px 3px #001b25;
+    box-shadow: 0px 13px 23px -13px rgba(0,0,0,0.5);
 }
 
 .major-section {
@@ -73,6 +71,7 @@ body {
     flex-direction: column;
     align-items: center;
     min-width: 100px;
+    color: rgba(255,255,255, .5);
 }
 
 .hvac button, .fan button {
@@ -84,16 +83,15 @@ body {
   height: 3rem;
   border: 0;
   border-radius: 3rem;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,255,255, 0.2)), color-stop(100%, rgba(255, 255, 255, 0.4)));
-  box-shadow: 0 1px 2px #fff, 0 -1px 1px #666, inset 0 -3px 3px rgba(0, 0, 0, 0.5), inset 0 3px 3px rgba(255, 255, 255, 0.8);
-  
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgb(176, 178, 174)), color-stop(100%, rgb(138, 155, 170)));
+  box-shadow: 0 1px 2px #3f5273, 0 -1px 1px #405272, inset 0 -3px 3px rgb(65, 69, 74), inset 0 3px 3px rgb(221, 222, 222);
   font-size: 0.5rem;
   outline: none;
 }
 
 .btn-circle--active {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,255,255, 0.4)), color-stop(100%, rgba(255,255,255, 0.2)));
-  box-shadow: 0 1px 2px #fff, 0 -1px 1px #666, inset 0 3px 3px rgba(0, 0, 0, 0.5), inset 0 -3px 3px rgba(255, 255, 255, 0.8);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgb(176, 178, 174)), color-stop(100%, rgb(138, 155, 170)));
+    box-shadow: 0 1px 2px #868686, 0 -1px 1px #504e4e, inset 0 3px 3px rgba(16, 16, 16, 0.5), inset 0 -3px 3px rgba(181, 181, 181, 0.8);
 }
 
 .btn-circle--passive:not(.btn-circle--active) {
@@ -113,16 +111,12 @@ button.circular-button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: 0px 0px 6px black;
-  border: none;
-  padding: 0;
 }
 
 
 button.circular-button.click-btn {
-  background: #dddddd;
-  background: -webkit-linear-gradient(#dddddd, #dddddd);
-  background: linear-gradient(#dddddd, #dddddd);
+  background: none;
+  border: 1px solid rgba(255,255,255, .5);
   cursor: pointer;
 }
 
@@ -135,14 +129,10 @@ button.circular-button:active {
 }
 
 button.circular-button .inner {
-  height: 2.3rem;
-  width: 2.3rem;
-  border-radius: 50%;
-  border: none;
   text-transform: uppercase;
   text-align: center;
   font-size: 2rem;
-  color: #5B6063;
+  color: rgba(255,255,255, .5);
   margin: auto;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -155,7 +145,7 @@ button.circular-button .inner span {
 
 #target-temp {
 
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin: 10px 0px;
 }
 
@@ -181,15 +171,16 @@ button.circular-button .inner span {
 }
 
 .temperature .current-temp-container {
-    box-shadow: 0px 0px 6px;
-    border-radius: 2px;
+    color:rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 6px;
 }
 
 .temperature .current-temp-container--HEAT {
-    background-color: #ef6a0e;
+    background-color: rgba(239, 106, 14, 0.7);
 }
 .temperature .current-temp-container--COOL {
-    background-color: #104ce9;
+    background-color: rgba(16, 76, 233, 0.7);
 }
 .channel-status--HEAT, .channel-status--COOL {
     color: white;
