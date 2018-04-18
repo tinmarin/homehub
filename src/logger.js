@@ -9,7 +9,7 @@ module.exports = new Logger();
 
 Logger.prototype.log = function(data) {
 
-    fs.appendFileSync('hub.log', new Date().toLocaleString() + ' ' + data.channel + ' ' + data.status + ' ' + data.targetTemp + ' ' + data.currentTemp + '\r\n');
+    //fs.appendFileSync('hub.log', new Date().toLocaleString() + ' ' + data.channel + ' ' + data.status + ' ' + data.targetTemp + ' ' + data.currentTemp + '\r\n');
 
 }
 
