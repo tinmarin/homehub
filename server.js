@@ -101,7 +101,6 @@ io.on('connection', socket => {
 
 dashHandler.on('detected', function() {
 	
-	console.log('Button Pressed - Setting Temp');
 	thermo.setTargetTemp(76);
 	io.emit('temp:target-changed', {targetTemp : 76});
 	

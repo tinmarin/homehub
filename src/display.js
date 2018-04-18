@@ -14,8 +14,6 @@ var Display = function () {
 
 Display.prototype.test = function() {
 
-    console.log('Printing to display');
-
 }
 
 Display.prototype.currentTemp = function(temp) {

@@ -58,16 +58,12 @@ Relay.prototype.write = function(pin, value) {
     gpio.setup(pin, direction, function(err){
 
 	if (err) {
-
-	    
 	    console.log(err);
-
 	    throw err; 
 	}
 
 	_direction = direction;
 	
-	console.log(`Written to pin ${pin} direction ${direction}`);
     });
 }
 

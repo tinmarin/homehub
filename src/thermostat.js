@@ -26,8 +26,6 @@ Thermostat.prototype.init = function(temp){
     relay.init([FAN, COOL, HEAT]);
 
     hvacStatus = HVAC_OFF;
-    
-    console.log('Initializing')
 }
 
 Thermostat.prototype.status = function(callback) {
@@ -131,10 +129,10 @@ Thermostat.prototype.targetTemp = function() {
 
 function processTemperature(currentTemp) {
 
-    console.log('HVAC Status: ' + hvacStatus);
-    console.log('Fan Status: ' + fanStatus);
-    console.log('Target:  ' + targetTemp);
-    console.log('Current: ' + currentTemp);
+    // console.log('HVAC Status: ' + hvacStatus);
+    // console.log('Fan Status: ' + fanStatus);
+    // console.log('Target:  ' + targetTemp);
+    // console.log('Current: ' + currentTemp);
 
     if(hvacStatus == HVAC_OFF) return;
     
@@ -168,9 +166,6 @@ function processTemperature(currentTemp) {
 function set(channel, value){
 
     var channelStr = getChannelName(channel);
-    
-    console.log('Turning channel: ' + channelStr + ' ' + value);
-    
     relay.write(channel, value);
 
     currentChannelOn = value === ON ? channelStr : '';
