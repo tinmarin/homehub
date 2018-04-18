@@ -1,0 +1,4 @@
+Add dtoverlay=w1-gpio to the end of /boot/config.text
+reboot
+sudo modprobe w1-gpio
+sudo modprobe w1-therm
